@@ -11,8 +11,12 @@ function App() {
     const yScroll = window.scrollY;
 
     const xOff = document.querySelector(".waldo-pic").offsetLeft;
+    const yOff = document.querySelector(".waldo-pic").offsetTop;
 
-    console.log(x + xScroll - xOff + ", " + (y + yScroll));
+    console.log(yOff)
+    console.log(xOff)
+
+    console.log(x + xScroll - xOff + ", " + (y + yScroll - yOff));
   }
 
   return (
