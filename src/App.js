@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import waldo from "./waldo.jpg";
+import NavigationBar from "./components/NavigationBar";
+import "./App.css";
 
 function App() {
+  function findCoors(e) {
+    const x = e.clientX;
+    const y = e.clientY;
+
+    const xScroll = window.scrollX;
+    const yScroll = window.scrollY;
+
+    const xOff = document.querySelector(".waldo-pic").offsetLeft;
+
+    console.log(x + xScroll - xOff + ", " + (y + yScroll));
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavigationBar />
+      <div className="box">
+        <img
+          className="waldo-pic"
+          onClick={findCoors}
+          src={waldo}
+          alt="busy waldo"
+        />
+      </div>
     </div>
   );
 }
