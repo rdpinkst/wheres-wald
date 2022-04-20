@@ -13,8 +13,8 @@ function App() {
     const xOff = document.querySelector(".waldo-pic").offsetLeft;
     const yOff = document.querySelector(".waldo-pic").offsetTop;
 
-    console.log(yOff)
-    console.log(xOff)
+    console.log(yOff);
+    console.log(xOff);
 
     console.log(x + xScroll - xOff + ", " + (y + yScroll - yOff));
   }
@@ -23,12 +23,14 @@ function App() {
     <div className="App">
       <NavigationBar />
       <div className="box">
-        <img
-          className="waldo-pic"
-          onClick={findCoors}
-          src={waldo}
-          alt="busy waldo"
-        />
+        <div className="contain-image">
+          <img
+            className="waldo-pic"
+            onClick={findCoors}
+            src={waldo}
+            alt="busy waldo"
+          />
+        </div>
       </div>
     </div>
   );
