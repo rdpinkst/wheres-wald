@@ -1,5 +1,6 @@
-import waldo from "./waldo.jpg";
+import React from "react";
 import NavigationBar from "./components/NavigationBar";
+import WaldoPic from "./components/WaldoPic";
 import "./App.css";
 
 function App() {
@@ -13,24 +14,23 @@ function App() {
     const xOff = document.querySelector(".waldo-pic").offsetLeft;
     const yOff = document.querySelector(".waldo-pic").offsetTop;
 
+    const xWidth = document.querySelector(".waldo-pic").clientWidth;
+    const yHeight = document.querySelector(".waldo-pic").clientHeight;
+
     console.log(yOff);
     console.log(xOff);
 
     console.log(x + xScroll - xOff + ", " + (y + yScroll - yOff));
+    console.log(xWidth);
+    console.log(yHeight);
+    
   }
 
   return (
     <div className="App">
       <NavigationBar />
       <div className="box">
-        <div className="contain-image">
-          <img
-            className="waldo-pic"
-            onClick={findCoors}
-            src={waldo}
-            alt="busy waldo"
-          />
-        </div>
+        <WaldoPic findCoord = {findCoors} /> 
       </div>
     </div>
   );
