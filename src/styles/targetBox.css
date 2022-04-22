@@ -1,0 +1,10 @@
+.box-choices{
+    position: absolute;
+}
+
+.box-character{
+    height: 2rem;
+    width: 2rem;
+    border: 2px solid black;
+}
+

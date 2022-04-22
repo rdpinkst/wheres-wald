@@ -1,6 +1,7 @@
 import React from "react";
 import NavigationBar from "./components/NavigationBar";
 import WaldoPic from "./components/WaldoPic";
+import TargetBox from "./components/TargetBox";
 import "./App.css";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <NavigationBar />
       <div className="box">
         <WaldoPic findCoord = {findCoors} /> 
+        <TargetBox />
       </div>
     </div>
   );
