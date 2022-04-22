@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import WaldoPic from "./components/WaldoPic";
 import TargetBox from "./components/TargetBox";
 import "./App.css";
 
 function App() {
+  const [left, setLeft] = useState(null);
+  const [top, setTop] = useState(null);
+  const [showBox, setShowBox] = useState(false)
+
   function findCoors(e) {
     const x = e.clientX;
     const y = e.clientY;
@@ -18,12 +22,11 @@ function App() {
     const xWidth = document.querySelector(".waldo-pic").clientWidth;
     const yHeight = document.querySelector(".waldo-pic").clientHeight;
 
-    console.log(yOff);
-    console.log(xOff);
+    setTop(prevState => prevState = y - 16);
+    setLeft(prevState => prevState = x - 16);
+    setShowBox(prevState => !prevState);
 
     console.log(x + xScroll - xOff + ", " + (y + yScroll - yOff));
-    console.log(xWidth);
-    console.log(yHeight);
     
   }
 
@@ -32,7 +35,7 @@ function App() {
       <NavigationBar />
       <div className="box">
         <WaldoPic findCoord = {findCoors} /> 
-        <TargetBox />
+        {showBox && <TargetBox posY = {top} posX = {left} />}
       </div>
     </div>
   );
