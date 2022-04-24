@@ -14,6 +14,7 @@ function App() {
   const [showBox, setShowBox] = useState(false);
   const [characterLocation, setCharacterLocation] = useState([]);
 
+  //Grab character location from Firestore and save to state
   useEffect(() => {
     const colRef = collection(db, "character-location");
     getDocs(colRef)
@@ -74,7 +75,7 @@ function App() {
   
   return (
     <div className="App">
-      <NavigationBar />
+      <NavigationBar location = {characterLocation} />
       <div className="box">
         <WaldoPic findCoord={findCoors} />
         {showBox && (

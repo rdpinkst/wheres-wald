@@ -32,7 +32,7 @@ function CharacterChoices({ location, setLocation, clientCoord, setShow }) {
           if (data.name === character) {
             return {
               ...data,
-              found: !data.found,
+              found: true,
             };
           } else {
             return data;
