@@ -25,8 +25,11 @@ function App() {
     setTop(prevState => prevState = y - 16);
     setLeft(prevState => prevState = x - 16);
     setShowBox(prevState => !prevState);
-
+    
+    console.log(x + ", " + y)
     console.log(x + xScroll - xOff + ", " + (y + yScroll - yOff));
+    console.log(xWidth + ", " + (yHeight - yOff))
+    console.log(yOff)
     
   }
 
