@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import WaldoPic from "./components/WaldoPic";
 import TargetBox from "./components/TargetBox";
+import LeaderBoard from "./components/LeaderBoard";
 import "./App.css";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
@@ -13,6 +14,7 @@ function App() {
   const [screenDim, setScreenDim] = useState({});
   const [showBox, setShowBox] = useState(false);
   const [characterLocation, setCharacterLocation] = useState([]);
+  const [showLeaderBoard, setShowLeaderBoard] = useState(false);
 
   //Grab character location from Firestore and save to state
   useEffect(() => {
@@ -72,11 +74,19 @@ function App() {
     }
   }, [screenDim, showBox]);
 
+  useEffect(() => {
+    const arrFound = characterLocation.filter(char => char.found === true);
+    if(arrFound.length === 3){
+      setShowLeaderBoard(prevState => !prevState)
+    }
+  }, [characterLocation])
+
   
   return (
     <div className="App">
       <NavigationBar location = {characterLocation} />
       <div className="box">
+        {showLeaderBoard && <LeaderBoard />}
         <WaldoPic findCoord={findCoors} />
         {showBox && (
           <TargetBox

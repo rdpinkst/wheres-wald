@@ -35,6 +35,8 @@ function TargetBox({
     };
   });
 
+
+
   return (
     <div className="box-choices" style={styleCharacter}>
       <div className="box-character"></div>
