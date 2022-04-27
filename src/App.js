@@ -88,7 +88,7 @@ function App() {
       <div className="box">
         {showLeaderBoard && <LeaderBoard />}
         <WaldoPic findCoord={findCoors} />
-        {showBox && (
+        {(showBox && !showLeaderBoard) && (
           <TargetBox
             posY={top}
             posX={left}
