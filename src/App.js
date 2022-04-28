@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import WaldoPic from "./components/WaldoPic";
 import TargetBox from "./components/TargetBox";
+import ScoreInput from "./components/ScoreInput";
 import LeaderBoard from "./components/LeaderBoard";
 import "./App.css";
 import { collection, getDocs } from "firebase/firestore";
@@ -86,7 +87,7 @@ function App() {
     <div className="App">
       <NavigationBar location = {characterLocation} />
       <div className="box">
-        {showLeaderBoard && <LeaderBoard />}
+        {showLeaderBoard && <ScoreInput />}
         <WaldoPic findCoord={findCoors} />
         {(showBox && !showLeaderBoard) && (
           <TargetBox

@@ -1,0 +1,31 @@
+.score-submit{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem;
+    background-color: #121212;
+    margin-top: 2rem;
+    height: 15%;
+    width: 25%;
+}
+
+.score-submit > label{
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+input{
+    color: #121212;
+    height: 2rem;
+}
+
+.submit-name{
+    width: 33%;
+    height: 25%;
+    margin-top: 1rem;
+    background-color: white;
+    color: #121212;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 700;
+}
