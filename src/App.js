@@ -5,20 +5,41 @@ import TargetBox from "./components/TargetBox";
 import ScoreInput from "./components/ScoreInput";
 import LeaderBoard from "./components/LeaderBoard";
 import "./App.css";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  serverTimestamp,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 function App() {
   const [left, setLeft] = useState(null);
   const [top, setTop] = useState(null);
+  const [render, setRender] = useState(false);
   const [coordinates, setCoordinates] = useState({});
   const [screenDim, setScreenDim] = useState({});
   const [showBox, setShowBox] = useState(false);
   const [characterLocation, setCharacterLocation] = useState([]);
   const [showLeaderBoard, setShowLeaderBoard] = useState(false);
+  const [currentPlayerId, setCurrentPlayerId] = useState("");
 
   //Grab character location from Firestore and save to state
   useEffect(() => {
+    if (render) {
+      console.log("Running......ONCE");
+    } 
+    if(!render){
+      console.log("First run")
+      setRender(prevState => !prevState)
+    }
+    // setTime();
+    // getCharacters();
+  }, []);
+
+  function getCharacters() {
     const colRef = collection(db, "character-location");
     getDocs(colRef)
       .then((snapshot) => {
@@ -31,7 +52,21 @@ function App() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }
+
+  async function setTime() {
+    console.log("Running");
+    const newItem = await addDoc(collection(db, "leaderboard"), {
+      timeStart: serverTimestamp(),
+    });
+
+    const fileId = newItem.id;
+    setCurrentPlayerId(fileId);
+    const updateDocId = doc(db, "leaderboard", fileId);
+    await updateDoc(updateDocId, {
+      id: fileId,
+    });
+  }
 
   function findCoors(e) {
     const x = e.clientX;
@@ -62,8 +97,7 @@ function App() {
     });
     setShowBox((prevState) => !prevState);
   }
-  
- 
+
   useEffect(() => {
     if (showBox) {
       setTop(
@@ -76,29 +110,28 @@ function App() {
   }, [screenDim, showBox]);
 
   useEffect(() => {
-    const arrFound = characterLocation.filter(char => char.found === true);
-    if(arrFound.length === 3){
-      setShowLeaderBoard(prevState => !prevState)
+    const arrFound = characterLocation.filter((char) => char.found === true);
+    if (arrFound.length === 3) {
+      setShowLeaderBoard((prevState) => !prevState);
     }
-  }, [characterLocation])
+  }, [characterLocation]);
 
-  
   return (
     <div className="App">
-      <NavigationBar location = {characterLocation} />
+      <NavigationBar location={characterLocation} />
       <div className="box">
         {showLeaderBoard && <ScoreInput />}
         <WaldoPic findCoord={findCoors} />
-        {(showBox && !showLeaderBoard) && (
+        {showBox && !showLeaderBoard && (
           <TargetBox
             posY={top}
             posX={left}
             clientCoord={coordinates}
             location={characterLocation}
-            setLocation = {setCharacterLocation}
+            setLocation={setCharacterLocation}
             checkScreenChange={setScreenDim}
             show={showBox}
-            setShow = {setShowBox}
+            setShow={setShowBox}
           />
         )}
       </div>
