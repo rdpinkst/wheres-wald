@@ -33,7 +33,7 @@ function TargetBox({
     return (_) => {
       window.removeEventListener("resize", newCoords);
     };
-  });
+  },[]);
 
 
 

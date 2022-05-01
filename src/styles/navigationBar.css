@@ -16,3 +16,19 @@
 .found{
     opacity: 0.4;
 }
+
+.center-button{
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.start{
+    background-color: #FFFFFF;
+    color: #121212;
+    border: none;
+    border-radius: 1rem;
+    padding: 0 2rem;
+    font-size: 2em;
+    font-weight: 600;
+}

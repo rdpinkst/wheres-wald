@@ -18,7 +18,7 @@ import { db } from "./firebase";
 function App() {
   const [left, setLeft] = useState(null);
   const [top, setTop] = useState(null);
-  const [render, setRender] = useState(false);
+  const [start, setStart] = useState(false);
   const [coordinates, setCoordinates] = useState({});
   const [screenDim, setScreenDim] = useState({});
   const [showBox, setShowBox] = useState(false);
@@ -26,18 +26,15 @@ function App() {
   const [showLeaderBoard, setShowLeaderBoard] = useState(false);
   const [currentPlayerId, setCurrentPlayerId] = useState("");
 
-  //Grab character location from Firestore and save to state
+  //Grab character location from Firestore and save to state when game starts
   useEffect(() => {
-    if (render) {
-      console.log("Running......ONCE");
-    } 
-    if(!render){
-      console.log("First run")
-      setRender(prevState => !prevState)
+    if (start) {
+      console.log("running");
+      getCharacters();
+      setTime();
     }
-    // setTime();
-    // getCharacters();
-  }, []);
+    
+  }, [start]);
 
   function getCharacters() {
     const colRef = collection(db, "character-location");
@@ -55,7 +52,6 @@ function App() {
   }
 
   async function setTime() {
-    console.log("Running");
     const newItem = await addDoc(collection(db, "leaderboard"), {
       timeStart: serverTimestamp(),
     });
@@ -80,22 +76,23 @@ function App() {
 
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
-
-    setTop((prevState) => (prevState = y - 16));
-    setLeft((prevState) => (prevState = x - 16));
-    setScreenDim({
-      width: xWidth,
-      height: yHeight,
-      orgWidth: xWidth,
-      orgHeight: yHeight,
-    });
-    setCoordinates({
-      xcoord: x + xScroll - xOff,
-      ycoord: y + yScroll - yOff,
-      width: xWidth,
-      height: yHeight - yOff,
-    });
-    setShowBox((prevState) => !prevState);
+    if (start) {
+      setTop((prevState) => (prevState = y - 16));
+      setLeft((prevState) => (prevState = x - 16));
+      setScreenDim({
+        width: xWidth,
+        height: yHeight,
+        orgWidth: xWidth,
+        orgHeight: yHeight,
+      });
+      setCoordinates({
+        xcoord: x + xScroll - xOff,
+        ycoord: y + yScroll - yOff,
+        width: xWidth,
+        height: yHeight - yOff,
+      });
+      setShowBox((prevState) => !prevState);
+    }
   }
 
   useEffect(() => {
@@ -118,11 +115,15 @@ function App() {
 
   return (
     <div className="App">
-      <NavigationBar location={characterLocation} />
+      <NavigationBar
+        location={characterLocation}
+        start={start}
+        setStart={setStart}
+      />
       <div className="box">
         {showLeaderBoard && <ScoreInput />}
         <WaldoPic findCoord={findCoors} />
-        {showBox && !showLeaderBoard && (
+        {start && showBox && !showLeaderBoard && (
           <TargetBox
             posY={top}
             posX={left}
