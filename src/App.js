@@ -64,6 +64,14 @@ function App() {
     });
   }
 
+  async function allFoundTime(){
+    const updateDocTime = doc(db, "leaderboard", currentPlayerId);
+    console.log(updateDocTime)
+    await updateDoc(updateDocTime, {
+      finishTime: serverTimestamp(),
+    })
+  }
+
   function findCoors(e) {
     const x = e.clientX;
     const y = e.clientY;
@@ -109,7 +117,9 @@ function App() {
   useEffect(() => {
     const arrFound = characterLocation.filter((char) => char.found === true);
     if (arrFound.length === 3) {
+      console.log("found")
       setShowLeaderBoard((prevState) => !prevState);
+      allFoundTime();
     }
   }, [characterLocation]);
 
@@ -121,7 +131,7 @@ function App() {
         setStart={setStart}
       />
       <div className="box">
-        {showLeaderBoard && <ScoreInput />}
+        {showLeaderBoard && <ScoreInput current = {currentPlayerId} />}
         <WaldoPic findCoord={findCoors} />
         {start && showBox && !showLeaderBoard && (
           <TargetBox
