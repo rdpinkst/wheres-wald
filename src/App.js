@@ -12,8 +12,10 @@ import {
   serverTimestamp,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import { async } from "@firebase/util";
 
 function App() {
   const [left, setLeft] = useState(null);
@@ -66,10 +68,23 @@ function App() {
 
   async function allFoundTime(){
     const updateDocTime = doc(db, "leaderboard", currentPlayerId);
+        
     console.log(updateDocTime)
     await updateDoc(updateDocTime, {
       finishTime: serverTimestamp(),
+
     })
+  }
+
+  async function setTotalTime(){
+    const docSnapshot = doc(db,"leaderboard", currentPlayerId);
+    const currentPlayer = await getDoc(docSnapshot);
+    
+    const currentPlayerData = currentPlayer.data();
+
+    await updateDoc(docSnapshot, {
+      totalTime: currentPlayerData.finishTime.seconds - currentPlayerData.timeStart.seconds, 
+        })
   }
 
   function findCoors(e) {
@@ -131,7 +146,7 @@ function App() {
         setStart={setStart}
       />
       <div className="box">
-        {showLeaderBoard && <ScoreInput current = {currentPlayerId} />}
+        {showLeaderBoard && <ScoreInput current = {currentPlayerId} timeTook = {setTotalTime} />}
         <WaldoPic findCoord={findCoors} />
         {start && showBox && !showLeaderBoard && (
           <TargetBox
