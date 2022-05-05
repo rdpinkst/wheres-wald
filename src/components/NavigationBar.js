@@ -16,25 +16,36 @@ function NavigationBar({ location, setStart, start }) {
     if (character.length > 0) {
       return character[0].found;
     }
+
     return;
   }
 
-  function buttonClicked(){
-    setStart(prevState => !prevState)
+  function buttonClicked() {
+    setStart((prevState) => !prevState);
   }
 
   useEffect(() => {
-    setWaldoFound(checkIfFound("Waldo"));
-    setOdlawFound(checkIfFound("Odlaw"));
-    setWizardFound(checkIfFound("Wizard"));
+    if (location.length > 0) {
+      setWaldoFound(checkIfFound("Waldo"));
+      setOdlawFound(checkIfFound("Odlaw"));
+      setWizardFound(checkIfFound("Wizard"));
+    } else{
+      setWaldoFound(false);
+      setOdlawFound(false);
+      setWizardFound(false);
+    }
   }, [location]);
 
   return (
     <div className="nav-bar">
       <h1 className="title-game">Where's Waldo</h1>
-      {!start && <div className="center-button">
-        <button className="start" onClick={buttonClicked}>Start Game</button>
-      </div>}
+      {!start && (
+        <div className="center-button">
+          <button className="start" onClick={buttonClicked}>
+            Start Game
+          </button>
+        </div>
+      )}
       <div className="picture-div">
         <PictureCharacter char={waldo} foundCharacter={waldoFound} />
         <PictureCharacter char={odlaw} foundCharacter={odlawFound} />

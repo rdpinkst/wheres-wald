@@ -24,6 +24,7 @@ function App() {
   const [screenDim, setScreenDim] = useState({});
   const [showBox, setShowBox] = useState(false);
   const [characterLocation, setCharacterLocation] = useState([]);
+  const [showNameInput, setShowNameInput] = useState(false);
   const [showLeaderBoard, setShowLeaderBoard] = useState(false);
   const [currentPlayerId, setCurrentPlayerId] = useState("");
 
@@ -130,16 +131,17 @@ function App() {
     const arrFound = characterLocation.filter((char) => char.found === true);
     if (arrFound.length === 3) {
       console.log("found");
-      setShowLeaderBoard((prevState) => !prevState);
+      setShowNameInput((prevState) => !prevState);
       allFoundTime();
     }
   }, [characterLocation]);
 
-  function restartGame(){
+  function restartGame() {
     setLeft(null);
     setTop(null);
     setStart(false);
     setCoordinates({});
+    setCharacterLocation([]);
     setCurrentPlayerId("");
     setScreenDim({});
   }
@@ -152,16 +154,20 @@ function App() {
         setStart={setStart}
       />
       <div className="box">
-        {showLeaderBoard && (
+        {showNameInput && (
           <ScoreInput
             current={currentPlayerId}
             timeTook={setTotalTime}
-            setShow={setShowLeaderBoard}
+            setShow={setShowNameInput}
+            setLeaderboard={setShowLeaderBoard}
             restart={restartGame}
           />
         )}
+        {showLeaderBoard && (
+          <LeaderBoard show={showLeaderBoard} setShow={setShowLeaderBoard} />
+        )}
         <WaldoPic findCoord={findCoors} />
-        {start && showBox && !showLeaderBoard && (
+        {start && showBox && !showLeaderBoard && !showNameInput && (
           <TargetBox
             posY={top}
             posX={left}

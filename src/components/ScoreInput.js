@@ -1,10 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {doc, updateDoc} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import "../styles/scoreInput.css";
 
-function ScoreInput({ current, timeTook, setShow, restart }) {
+function ScoreInput({
+  current,
+  timeTook,
+  setShow,
+  restart,
+  setLeaderboard,
+}) {
   const [submit, setSubmit] = useState(false);
 
   //create async function to write to firestore the name of player
@@ -12,13 +18,13 @@ function ScoreInput({ current, timeTook, setShow, restart }) {
     setSubmit((prevSubmit) => !prevSubmit);
   }
 
-  async function getName(){
+  async function getName() {
     const formData = document.querySelector(".score-submit");
     const playerRef = doc(db, "leaderboard", current);
 
     await updateDoc(playerRef, {
       name: formData.playerName.value,
-    })
+    });
   }
 
   //makes async function run everytime (maybe thinking it wrong)
@@ -28,7 +34,8 @@ function ScoreInput({ current, timeTook, setShow, restart }) {
       timeTook();
       setSubmit((prevSubmit) => !prevSubmit);
       getName();
-      setShow(prevShow => !prevShow);
+      setShow((prevShow) => !prevShow);
+      setLeaderboard((prevState) => !prevState);
       restart();
     }
   }, [submit]);
