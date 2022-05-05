@@ -1,8 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import {doc, updateDoc} from "firebase/firestore";
+import { db } from "../firebase";
 import "../styles/scoreInput.css";
 
-function ScoreInput({ current, timeTook }) {
+function ScoreInput({ current, timeTook, setShow, restart }) {
   const [submit, setSubmit] = useState(false);
 
   //create async function to write to firestore the name of player
@@ -10,8 +12,13 @@ function ScoreInput({ current, timeTook }) {
     setSubmit((prevSubmit) => !prevSubmit);
   }
 
-  function nameSubmit(e) {
-    console.log(e.target.value);
+  async function getName(){
+    const formData = document.querySelector(".score-submit");
+    const playerRef = doc(db, "leaderboard", current);
+
+    await updateDoc(playerRef, {
+      name: formData.playerName.value,
+    })
   }
 
   //makes async function run everytime (maybe thinking it wrong)
@@ -20,6 +27,9 @@ function ScoreInput({ current, timeTook }) {
       console.log("run when submitted");
       timeTook();
       setSubmit((prevSubmit) => !prevSubmit);
+      getName();
+      setShow(prevShow => !prevShow);
+      restart();
     }
   }, [submit]);
 
@@ -29,9 +39,8 @@ function ScoreInput({ current, timeTook }) {
       <input
         type="text"
         id="player-score"
-        name="playerScore"
+        name="playerName"
         placeholder="Input Name"
-        onChange={nameSubmit}
       />
       <button className="submit-name" type="button" onClick={submitted}>
         Submit

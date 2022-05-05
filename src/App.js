@@ -15,7 +15,6 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { async } from "@firebase/util";
 
 function App() {
   const [left, setLeft] = useState(null);
@@ -31,11 +30,9 @@ function App() {
   //Grab character location from Firestore and save to state when game starts
   useEffect(() => {
     if (start) {
-      console.log("running");
       getCharacters();
       setTime();
     }
-    
   }, [start]);
 
   function getCharacters() {
@@ -66,25 +63,25 @@ function App() {
     });
   }
 
-  async function allFoundTime(){
+  async function allFoundTime() {
     const updateDocTime = doc(db, "leaderboard", currentPlayerId);
-        
-    console.log(updateDocTime)
+
     await updateDoc(updateDocTime, {
       finishTime: serverTimestamp(),
-
-    })
+    });
   }
 
-  async function setTotalTime(){
-    const docSnapshot = doc(db,"leaderboard", currentPlayerId);
+  async function setTotalTime() {
+    const docSnapshot = doc(db, "leaderboard", currentPlayerId);
     const currentPlayer = await getDoc(docSnapshot);
-    
+
     const currentPlayerData = currentPlayer.data();
 
     await updateDoc(docSnapshot, {
-      totalTime: currentPlayerData.finishTime.seconds - currentPlayerData.timeStart.seconds, 
-        })
+      totalTime:
+        currentPlayerData.finishTime.seconds -
+        currentPlayerData.timeStart.seconds,
+    });
   }
 
   function findCoors(e) {
@@ -132,11 +129,20 @@ function App() {
   useEffect(() => {
     const arrFound = characterLocation.filter((char) => char.found === true);
     if (arrFound.length === 3) {
-      console.log("found")
+      console.log("found");
       setShowLeaderBoard((prevState) => !prevState);
       allFoundTime();
     }
   }, [characterLocation]);
+
+  function restartGame(){
+    setLeft(null);
+    setTop(null);
+    setStart(false);
+    setCoordinates({});
+    setCurrentPlayerId("");
+    setScreenDim({});
+  }
 
   return (
     <div className="App">
@@ -146,7 +152,14 @@ function App() {
         setStart={setStart}
       />
       <div className="box">
-        {showLeaderBoard && <ScoreInput current = {currentPlayerId} timeTook = {setTotalTime} />}
+        {showLeaderBoard && (
+          <ScoreInput
+            current={currentPlayerId}
+            timeTook={setTotalTime}
+            setShow={setShowLeaderBoard}
+            restart={restartGame}
+          />
+        )}
         <WaldoPic findCoord={findCoors} />
         {start && showBox && !showLeaderBoard && (
           <TargetBox
