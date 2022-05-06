@@ -1,7 +1,31 @@
 .leader-board{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     position: absolute;
     margin-top: 2rem;
-    width: 50%;
+    width: 33%;
     height: 75%;
     background-color: black;
+    overflow-y: scroll;
+    
+}
+.board-title{
+    margin: 2rem 0 1rem 0;
+    font-size: 3rem;
+}
+.person-score{
+    display: flex;
+    width: 75%;
+    justify-content: space-between;
+    border: 1px solid #FFFFFF;
+    margin: 0.25rem;
+}
+.person-score:last-child{
+    margin-bottom: 2rem;
+}
+
+.name, .time{
+    margin: 0.5rem 1rem;
+    font-size: 1.25rem;
 }

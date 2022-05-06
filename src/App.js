@@ -139,7 +139,6 @@ function App() {
   function restartGame() {
     setLeft(null);
     setTop(null);
-    setStart(false);
     setCoordinates({});
     setCharacterLocation([]);
     setCurrentPlayerId("");
@@ -164,7 +163,12 @@ function App() {
           />
         )}
         {showLeaderBoard && (
-          <LeaderBoard show={showLeaderBoard} setShow={setShowLeaderBoard} />
+          <LeaderBoard
+            show={showLeaderBoard}
+            setShow={setShowLeaderBoard}
+            setStart={setStart}
+            setBox={setShowBox}
+          />
         )}
         <WaldoPic findCoord={findCoors} />
         {start && showBox && !showLeaderBoard && !showNameInput && (

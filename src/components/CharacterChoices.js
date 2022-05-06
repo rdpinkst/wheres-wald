@@ -40,7 +40,7 @@ function CharacterChoices({ location, setLocation, clientCoord, setShow }) {
         });
       });
     }
-    setShow(prevState => !prevState);
+    setShow((prevState) => !prevState);
   }
 
   return (

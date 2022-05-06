@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import "../styles/leaderBoard.css";
 
-function LeaderBoard({ show, setShow }) {
+function LeaderBoard({ show, setShow, setStart, setBox }) {
   const [leader, setLeader] = useState([]);
 
   useEffect(() => {
@@ -35,31 +35,40 @@ function LeaderBoard({ show, setShow }) {
     return () => unsubscribe();
   }, [show]);
 
-  function closeBoard(e){
-    if(e.target.className !== "person-score" && e.target.parentNode !== "person-score"){
-        setShow(prevState => !prevState)
+  function closeBoard(e) {
+    if (
+      e.target.className !== "person-score" &&
+      e.target.parentNode !== "person-score"
+    ) {
+      setShow((prevState) => !prevState);
+      setStart((prevState) => !prevState);
+      setBox(false);
     }
   }
 
   useEffect(() => {
-      console.log("running eventListener")
-      window.addEventListener("click", closeBoard);
+    console.log("running eventListener");
+    window.addEventListener("click", closeBoard);
 
-      return () => window.removeEventListener("click", closeBoard)
-  }, [])
+    return () => window.removeEventListener("click", closeBoard);
+  }, []);
 
-  const orderedBoard = leader.map((data) => {
+  const orderedBoard = leader.map((data, index) => {
     return (
       <div className="person-score" key={data.id}>
-        <p>{data.name.length === 0 ? "ANONYMOUS" : data.name}</p>
-        <p>{data.time}</p>
+        <p className="name">
+          {data.name.length === 0
+            ? `${index}.  ANONYMOUS`
+            : `${index}.  ${data.name}`}
+        </p>
+        <p className="time">{data.time} seconds</p>
       </div>
     );
   });
 
   return (
     <div className="leader-board">
-      <h1>Leader Board</h1>
+      <h1 className="board-title">Leader Board</h1>
       {orderedBoard}
     </div>
   );
