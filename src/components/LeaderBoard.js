@@ -36,9 +36,12 @@ function LeaderBoard({ show, setShow, setStart, setBox }) {
   }, [show]);
 
   function closeBoard(e) {
+    console.log(e.target.className)
     if (
+      e.target.className !== "leader-board" &&
+      e.target.parentNode.className !== "leader-board" &&
       e.target.className !== "person-score" &&
-      e.target.parentNode !== "person-score"
+      e.target.parentNode.className !== "person-score"
     ) {
       setShow((prevState) => !prevState);
       setStart((prevState) => !prevState);

@@ -14,7 +14,8 @@ function ScoreInput({
   const [submit, setSubmit] = useState(false);
 
   //create async function to write to firestore the name of player
-  function submitted() {
+  function submitted(e) {
+    e.preventDefault();
     setSubmit((prevSubmit) => !prevSubmit);
   }
 
@@ -41,7 +42,7 @@ function ScoreInput({
   }, [submit]);
 
   return (
-    <form action="#" className="score-submit">
+    <form action="#" className="score-submit" onSubmit={submitted}>
       <label htmlFor="player-score">Input Your Name:</label>
       <input
         type="text"
@@ -49,7 +50,7 @@ function ScoreInput({
         name="playerName"
         placeholder="Input Name"
       />
-      <button className="submit-name" type="button" onClick={submitted}>
+      <button className="submit-name" type="submit">
         Submit
       </button>
     </form>
